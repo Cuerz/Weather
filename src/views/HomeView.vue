@@ -3,7 +3,7 @@
     <el-scrollbar height="100vh">
       <div id="page1" class="scrollbar-demo-item">
         <video loop="loop" autoplay="autoplay" muted="muted">
-          <source src="../assets/autumn.mp4" type="video/mp4">
+          <source src="../assets/autumn.mp4" type="video/mp4" />
           <!-- <source src="../assets/nuist.mp4" type="video/mp4"> -->
         </video>
         <img class="banner" src="../assets/index.png" />
@@ -12,22 +12,18 @@
       <div id="page2" class="scrollbar-demo-item">
         <div class="intro">
           <div class="link">
-            <router-link to="/nuist" style="text-decoration: none;">
+            <router-link to="/mynuist" style="text-decoration: none">
               Click 解锁四季南信
             </router-link>
           </div>
           <div class="poem">
             <p v-for="item in poem" :key="item">{{ item }}</p>
           </div>
-
-
         </div>
       </div>
     </el-scrollbar>
   </div>
 </template>
-
-
 
 <style scoped>
 .scrollbar-demo-item {
@@ -78,7 +74,7 @@ video {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.link>a {
+.link > a {
   color: #42b983;
 }
 </style>
@@ -86,15 +82,17 @@ video {
 <script>
 // @ is an alias to /src
 
-
 export default {
   name: 'HomeView',
-  components: {
-
-  },
+  components: {},
   data() {
     return {
-      poem: ['春雨惊春清谷天，', '夏满芒夏暑相连。', '秋处露秋寒霜降，', '冬雪雪冬小大寒。']
+      poem: [
+        '春雨惊春清谷天，',
+        '夏满芒夏暑相连。',
+        '秋处露秋寒霜降，',
+        '冬雪雪冬小大寒。',
+      ],
     }
   },
 }
