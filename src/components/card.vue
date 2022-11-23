@@ -1,43 +1,10 @@
 <template lang="">
-  <el-card shadow="hover">
-    <h1>天气</h1>
-    <el-input
-      v-model="input"
-      placeholder="输入位置并按下回车以查询该地天气"
-      @keyup.enter.native="keyUp"
-    ></el-input>
-    <p class="ipAddress">
-      <i class="el-icon-location-outline"></i>{{ ipAddress }}
-      <el-link type="primary" @click="useIp">使用该地区</el-link>
-    </p>
-    <el-divider></el-divider>
-    <div class="showBlock">
-      <p class="address">{{ address }}</p>
-      <p class="temperature">
-        {{ temperature }}℃<span class="weather"
-          >{{ weather }}
-          <span><i class="mainWeather" :class="getIcon"></i></span
-        ></span>
-      </p>
-
-      <div class="other">
-        <p class="wind">
-          <i class="el-icon-wind-power"></i> 风向:<span>{{
-            winddirection
-          }}</span
-          >&nbsp;&nbsp;&nbsp;<span>风力:{{ windpower }}级</span>
-        </p>
-        <p class="humidity">
-          <i class="el-icon-odometer"></i> 湿度:{{ humidity }}
-        </p>
-        <p id="reporttime">消息发布时间:{{ reporttime }}</p>
-      </div>
-    </div>
-  </el-card>
+  <div></div>
 </template>
 <script>
+import { getlocate } from '@/api'
 export default {
-  name: 'Weather',
+  name: 'WeatherCard',
   data() {
     return {
       input: '',
@@ -89,21 +56,21 @@ export default {
     },
   },
   computed: {
-    getIcon() {
-      this.icon = false
-      if (this.weather == '晴') {
-        return 'el-icon-sunny'
-      } else if (this.weather == '多云') {
-        return 'el-icon-cloudy-and-sunny'
-      } else if (this.weather == '阴') {
-        return 'el-icon-partly-cloudy'
-      } else if (this.weather.indexOf('雨')) {
-        return 'el-icon-heavy-rain'
-      } else if (this.weather.indexOf('雪')) {
-        return 'el-icon-light-rain'
-      }
-      this.icon = true
-    },
+    // getIcon() {
+    //   this.icon = false
+    //   if (this.weather == '晴') {
+    //     return 'el-icon-sunny'
+    //   } else if (this.weather == '多云') {
+    //     return 'el-icon-cloudy-and-sunny'
+    //   } else if (this.weather == '阴') {
+    //     return 'el-icon-partly-cloudy'
+    //   } else if (this.weather.indexOf('雨')) {
+    //     return 'el-icon-heavy-rain'
+    //   } else if (this.weather.indexOf('雪')) {
+    //     return 'el-icon-light-rain'
+    //   }
+    //   this.icon = true
+    // },
   },
   methods: {
     useIp() {
@@ -116,20 +83,10 @@ export default {
     },
     getIp() {
       //挂载时执行，获取ip地址
-      this.$axios
-        .get('https://restapi.amap.com/v3/ip?parameters', {
-          params: {
-            key: '#在这里填入你申请来的key#', //需要操作
-          },
-        })
-        .then((response) => {
-          this.ipAddress = `${response.data.province}${response.data.city}`
-          this.ipAdCode = response.data.adcode
-
-          if (!localStorage.getItem('adcode')) {
-            this.adcode = response.data.adcode
-          }
-        })
+      getlocate().then((response) => {
+        this.ipAddress = `${response.data.province}${response.data.city}`
+        this.ipAdCode = response.data.adcode
+      })
     },
     getCityCode() {
       //查询城市的adcode
@@ -154,11 +111,12 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.getItem('adcode')) {
-      //取出本地存储的地址，若不存在，则使用ip地址
-      this.adcode = localStorage.getItem('adcode')
-    }
     this.getIp()
+    this.ElMessageBox.alert('This is a message', 'Title', {
+    // if you want to disable its autofocus
+    // autofocus: false,
+    confirmButtonText: 'OK',
+  })
   },
 }
 </script>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import MyNuist from '../views/MyNuist.vue'
+import WeatherView from '../views/WeatherView.vue'
 
 const routes = [
   {
@@ -12,6 +13,10 @@ const routes = [
     path: '/mynuist',
     name: 'mynuist',
     component: MyNuist
+  },{
+    path: '/weather',
+    name: 'weather',
+    component: WeatherView
   }
 ]
 
