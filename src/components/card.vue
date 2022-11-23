@@ -1,66 +1,134 @@
 <template lang="">
-  <div></div>
+  <el-row>
+    <el-col :span="12">
+      <el-card class="weacard" shadow="always">
+        <h2>天气</h2>
+        <div class="block">
+          <el-cascader style="width:6vw;margin-right:10px"
+            v-model="city"
+            :options="options"
+            :props="{expandTrigger: 'hover'}"
+          />
+          <el-button type="primary">查询</el-button>
+        </div>
+        <el-divider></el-divider>
+        <div class="showBlock">
+          <p class="city">{{ city }}</p>
+          <p class="temperature">
+            {{ temperature }}℃
+            <span class="weather">{{ weather }}
+              <span>
+                <el-icon :size="20"><Sunny /></el-icon>
+                <i class="mainWeather" :class="getIcon"></i>
+              </span>
+            </span>
+          </p>
+  
+        <div class="other">
+          <p class="wind">
+            <i class="el-icon-wind-power"></i> 风向:<span>{{
+              winddirection
+            }}</span
+            >&nbsp;&nbsp;&nbsp;<span>风力:{{ windpower }}级</span>
+          </p>
+          <p class="humidity">
+            <i class="el-icon-odometer"></i> 湿度:{{ humidity }}
+          </p>
+          <p id="reporttime">消息发布时间:{{ reporttime }}</p>
+        </div>
+      </div>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 <script>
 import { getlocate } from '@/api'
+
+ 
 export default {
   name: 'WeatherCard',
   data() {
     return {
-      input: '',
+      options : [
+      {
+        value: '江苏',
+        label: '江苏',
+        children: [
+          {
+            value: '南京',
+            label: '南京',
+          },
+          {
+            value: '苏州',
+            label: '苏州',
+          },
+          {
+            value: '无锡',
+            label: '无锡',
+          },
+          {
+            value: '镇江',
+            label: '镇江',
+          },
+          {
+            value: '南通',
+            label: '南通',
+          },
+          {
+            value: '扬州',
+            label: '扬州',
+          },
+          {
+            value: '泰州',
+            label: '泰州',
+          },
+          {
+            value: '盐城',
+            label: '盐城',
+          },
+          {
+            value: '淮安',
+            label: '淮安',
+          },
+          {
+            value: '盐城',
+            label: '盐城',
+          },
+          {
+            value: '宿迁',
+            label: '宿迁',
+          },
+          {
+            value: '徐州',
+            label: '徐州',
+          },
+          {
+            value: '连云港',
+            label: '连云港',
+          },
+        ],
+      },
+      ],
       city: '',
-      adcode: '',
-      address: '',
       ipAddress: '',
-      ipAdCode: '',
-      weather: '',
-      temperature: '',
-      winddirection: '',
-      windpower: '',
-      humidity: '',
-      reporttime: '',
+
+      // 天气情况
+      weather: '晴',
+      temperature: '25',
+      winddirection: '南',
+      windpower: '5',
+      humidity: '4',
+      reporttime: '10.00',
       icon: true,
     }
   },
   watch: {
-    adcode() {
-      //当adcode发生变化时，重新请求该地天气
-      this.$axios
-        .get('https://restapi.amap.com/v3/weather/weatherInfo?parameters', {
-          params: {
-            key: '#在这里填入你申请来的key#', //需要操作
-            city: this.adcode,
-            extensions: 'base',
-          },
-        })
-        .then(
-          (response) => {
-            let lives = response.data.lives[0]
-            this.weather = lives.weather
-            this.temperature = lives.temperature
-            this.winddirection = lives.winddirection
-            this.windpower = lives.windpower
-            this.humidity = lives.humidity
-            this.reporttime = lives.reporttime
-            this.address = lives.city
-
-            localStorage.setItem('adcode', this.adcode) //将存储目前查询的天气
-          },
-          (error) => {
-            this.$notify.info({
-              title: '未知错误',
-              message: error.message,
-            })
-          }
-        )
-    },
   },
   computed: {
     // getIcon() {
-    //   this.icon = false
-    //   if (this.weather == '晴') {
+    //   if (this.weather == '晴'){
     //     return 'el-icon-sunny'
-    //   } else if (this.weather == '多云') {
+    //   }else if (this.weather == '多云') {
     //     return 'el-icon-cloudy-and-sunny'
     //   } else if (this.weather == '阴') {
     //     return 'el-icon-partly-cloudy'
@@ -69,111 +137,58 @@ export default {
     //   } else if (this.weather.indexOf('雪')) {
     //     return 'el-icon-light-rain'
     //   }
-    //   this.icon = true
+    //   return 'el-icon-sunny'
     // },
   },
   methods: {
-    useIp() {
-      this.adcode = this.ipAdCode
-    },
-    keyUp() {
-      this.city = this.input
-      this.input = ''
-      this.getCityCode()
-    },
-    getIp() {
-      //挂载时执行，获取ip地址
+    // 挂载时调用，获取当前位置信息
+    getAddress() {
       getlocate().then((response) => {
         this.ipAddress = `${response.data.province}${response.data.city}`
-        this.ipAdCode = response.data.adcode
+        this.city = response.data.city
+        this.$alert('检测到您当前城市为'+this.ipAddress+'，已为您切换至当前城市。', 'INFO', {
+          // if you want to disable its autofocus
+          // autofocus: false,
+          confirmButtonText: 'OK',
+        })
       })
-    },
-    getCityCode() {
-      //查询城市的adcode
-      this.$axios
-        .get('https://restapi.amap.com/v3/geocode/geo?parameters', {
-          params: {
-            key: '#在这里填入你申请来的key#', //需要操作
-            address: this.city,
-          },
-        })
-        .then((response) => {
-          if (response.data.status == '1') {
-            console.log(response)
-            this.adcode = response.data.geocodes[0].adcode
-          } else if (response.data.status == '0') {
-            this.$notify.error({
-              title: '查询错误',
-              message: '请重新核对查询地址',
-            })
-          }
-        })
     },
   },
   mounted() {
-    this.getIp()
-    this.ElMessageBox.alert('This is a message', 'Title', {
-    // if you want to disable its autofocus
-    // autofocus: false,
-    confirmButtonText: 'OK',
-  })
+    this.getAddress()
   },
 }
 </script>
 <style scoped>
-.ipAddress {
-  margin-top: 10px;
-}
+  .weacard{
+    margin: 5vh auto;
+    width: 20vw;
+    /* background-color: #85FFBD;
+    background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%); */
+  }
 
-.el-card {
-  background-color: rgba(255, 215, 55, 0.8);
-  height: 409px;
-  color: #000;
-}
+  .temperature {
+    font-size: 50px;
+  }
 
-h1 {
-  margin: 0px 0px 10px 10px;
-}
+  .weather {
+    margin-left: 20px;
+    font-size: 35px;
+  }
 
-.showBlock {
-  margin-top: 10px;
-}
+  .city {
+    font-size: 20px;
+  }
 
-.temperature {
-  font-size: 50px;
-}
-
-.weather {
-  margin-left: 20px;
-  font-size: 35px;
-}
-
-.address {
-  font-size: 20px;
-}
-
-.other {
-  margin-top: 10px;
-}
-
-.other p {
-  margin-top: 10px;
-  font-size: 18px;
-}
-
-#reporttime {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.mainWeather {
-  float: right;
-  margin-top: 10px;
-  margin-right: 10%;
-  font-size: 120px;
-}
-
-.showBlock {
-  margin-left: 10px;
-}
+  #reporttime {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  
+  .mainWeather {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10%;
+    font-size: 120px;
+  }
 </style>
