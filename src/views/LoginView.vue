@@ -1,7 +1,6 @@
 <template>
     <div class="login-container">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-  
         <div class="title-container">
           <h3 class="title">Login</h3>
         </div>
@@ -14,7 +13,7 @@
             name="username"
             type="text"
             tabindex="1"
-            auto-complete="on"
+            auto-complete="false"
           />
         </el-form-item>
   
@@ -27,7 +26,7 @@
             placeholder="Password"
             name="password"
             tabindex="2"
-            auto-complete="on"
+            auto-complete="false"
           />
         </el-form-item>
   
@@ -60,25 +59,12 @@
         redirect: undefined
       }
     },
-    watch: {
-      $route: {
-        handler: function(route) {
-          this.redirect = route.query && route.query.redirect
-        },
-        immediate: true
-      }
-    },
     methods: {
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            }).catch(() => {
-              this.loading = false
-            })
+            this.loading=true
+            console.log(1)
           } else {
             console.log('error submit!!')
             return false
@@ -114,20 +100,20 @@
       width: 100%;
   
       input {
-        width: 100%;
+        width: 496px;
         background: transparent;
         border: 0px;
         -webkit-appearance: none;
         border-radius: 0px;
         padding: 12px 5px 12px 15px;
-        color: $light_gray;
+        color: $bg;
         height: 47px;
         caret-color: $cursor;
   
-        &:-webkit-autofill {
-          box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
-        }
+        // &:-webkit-autofill {
+        //   box-shadow: 0 0 0px 1000px $bg inset !important;
+        //   -webkit-text-fill-color: $cursor !important;
+        // }
       }
     }
   
@@ -191,16 +177,6 @@
         text-align: center;
         font-weight: bold;
       }
-    }
-  
-    .show-pwd {
-      position: absolute;
-      right: 10px;
-      top: 7px;
-      font-size: 16px;
-      color: $dark_gray;
-      cursor: pointer;
-      user-select: none;
     }
   }
   </style>
