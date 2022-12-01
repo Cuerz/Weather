@@ -28,7 +28,10 @@ const routes = [
   },{
     path: '/weather',
     name: 'weather',
-    component: WeatherView
+    component: WeatherView,
+    meta: {
+      requireAuth: true
+    }
   }
 ]
 

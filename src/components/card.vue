@@ -4,7 +4,7 @@
       <el-card class="weacard" shadow="always">
         <h2>天气</h2>
         <div class="block">
-          <el-cascader style="width:6vw;margin-right:10px"
+          <el-cascader style="width:8vw;margin-right:10px"
             v-model="city"
             :options="options"
             :props="{expandTrigger: 'hover'}"
@@ -17,10 +17,10 @@
           <p class="temperature">
             {{ temperature }}℃
             <span class="weather">{{ weather }}
-              <span>
+              <!-- <span>
                 <el-icon :size="20"><Sunny /></el-icon>
                 <i class="mainWeather" :class="getIcon"></i>
-              </span>
+              </span> -->
             </span>
           </p>
   
@@ -34,7 +34,6 @@
           <p class="humidity">
             <i class="el-icon-odometer"></i> 湿度:{{ humidity }}
           </p>
-          <p id="reporttime">消息发布时间:{{ reporttime }}</p>
         </div>
       </div>
       </el-card>
@@ -83,8 +82,8 @@ export default {
             label: '泰州',
           },
           {
-            value: '盐城',
-            label: '盐城',
+            value: '常州',
+            label: '常州',
           },
           {
             value: '淮安',
@@ -118,7 +117,6 @@ export default {
       winddirection: '南',
       windpower: '5',
       humidity: '4',
-      reporttime: '10.00',
       icon: true,
     }
   },
@@ -162,12 +160,12 @@ export default {
 <style scoped>
   .weacard{
     margin: 5vh auto;
-    width: 20vw;
-    /* background-color: #85FFBD;
-    background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%); */
+    width: 25vw;
+    background: #dedee0
   }
 
   .temperature {
+    margin: 0 auto;
     font-size: 50px;
   }
 
@@ -177,13 +175,9 @@ export default {
   }
 
   .city {
-    font-size: 20px;
+    font-size: 25px;
   }
 
-  #reporttime {
-    margin-top: 10px;
-    font-size: 15px;
-  }
   
   .mainWeather {
     float: right;
