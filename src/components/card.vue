@@ -43,7 +43,6 @@
 <script>
 import { getlocate } from '@/api'
 
- 
 export default {
   name: 'WeatherCard',
   data() {
@@ -119,24 +118,6 @@ export default {
       humidity: '4',
       icon: true,
     }
-  },
-  watch: {
-  },
-  computed: {
-    // getIcon() {
-    //   if (this.weather == '晴'){
-    //     return 'el-icon-sunny'
-    //   }else if (this.weather == '多云') {
-    //     return 'el-icon-cloudy-and-sunny'
-    //   } else if (this.weather == '阴') {
-    //     return 'el-icon-partly-cloudy'
-    //   } else if (this.weather.indexOf('雨')) {
-    //     return 'el-icon-heavy-rain'
-    //   } else if (this.weather.indexOf('雪')) {
-    //     return 'el-icon-light-rain'
-    //   }
-    //   return 'el-icon-sunny'
-    // },
   },
   methods: {
     // 挂载时调用，获取当前位置信息
