@@ -1,12 +1,28 @@
 <template>
-  <WeatherCard></WeatherCard>
+  <el-row>
+    <el-col :span="10">
+        <WeatherCardVue />
+    </el-col>
+
+    <el-col :span="14">
+      <el-card style="height:390px;width: 840px;margin-top: 5vh;">
+        <TemperatureChartVue />
+      </el-card>
+
+      <el-card style="height:390px;width: 840px;margin-top: 5vh;">
+        <RainChartVue />
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
-import WeatherCard from '@/components/card.vue'
+import WeatherCardVue from '@/components/card.vue'
+import TemperatureChartVue from '@/components/TemperatureChart.vue'
+import RainChartVue from '@/components/RainChart.vue';
 export default {
   name: 'WeatherView',
-  components: { WeatherCard },
+  components: { WeatherCardVue, TemperatureChartVue,RainChartVue },
 }
 </script>
 
