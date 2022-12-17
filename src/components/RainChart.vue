@@ -3,6 +3,8 @@
 </template>
 
 <script>
+var rainEcharts = null
+import { getrain } from '@/api'
 import * as echarts from 'echarts'
 export default {
   name: 'RainChart',
@@ -22,9 +24,26 @@ export default {
   mounted() {
     this.initchart()
   },
+  computed: {
+    city() {
+      return this.$store.state.city
+    },
+  },
+  watch: {
+    city() {
+      getrain({ city: this.city }).then((response) => {
+        console.log(response)
+      })
+      // this.setOption(rain)
+    },
+  },
   methods: {
     initchart() {
-      var rainEcharts = null
+      rainEcharts = echarts.init(this.$refs.rainEcharts, 'customed', {
+        renderer: 'svg',
+      })
+    },
+    setOption(rain) {
       const option = {
         title: {
           text: 'Rain Condition',
@@ -76,13 +95,10 @@ export default {
             name: 'Rain',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            data: rain,
           },
         ],
       }
-      rainEcharts = echarts.init(this.$refs.rainEcharts, 'customed', {
-        renderer: 'svg',
-      })
       option && rainEcharts.setOption(option)
     },
   },

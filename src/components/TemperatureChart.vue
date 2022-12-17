@@ -3,7 +3,9 @@
 </template>
 
 <script>
+var temEcharts = null
 import * as echarts from 'echarts'
+import { gettemperature } from '@/api'
 export default {
   name: 'TemperatureChart',
   props: {
@@ -22,9 +24,26 @@ export default {
   mounted() {
     this.initchart()
   },
+  computed: {
+    city(){
+			return this.$store.state.city
+    }
+  },
+  watch:{
+    city(){
+      gettemperature({ city: this.city }).then((response) => {
+        console.log(response)
+      })
+      // this.setOption(date,temperature)
+    }
+  },
   methods: {
     initchart() {
-      var temEcharts = null
+      temEcharts = echarts.init(this.$refs.temEcharts, 'customed', {
+        renderer: 'svg',
+      })
+    },
+    setOption(date,temperature) {
       const option = {
         title: {
           text: 'Temperature Condition',
@@ -34,7 +53,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: date,
         },
         yAxis: {
           type: 'value',
@@ -45,17 +64,14 @@ export default {
         series: [
           {
             name: 'Temperature',
-            data: [20, 15, 10, 8, 0, -1, 15],
+            data: temperature,
             type: 'line',
             smooth: true,
           },
         ],
       }
-      temEcharts = echarts.init(this.$refs.temEcharts, 'customed', {
-        renderer: 'svg',
-      })
       option && temEcharts.setOption(option)
-    },
+    }
   },
 }
 </script>
