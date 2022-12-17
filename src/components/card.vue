@@ -4,11 +4,11 @@
     <div class="block">
       <el-cascader
         style="width: 8vw; margin-right: 10px"
-        v-model="city"
+        v-model="choosecity"
         :options="options"
         :props="{ expandTrigger: 'hover' }"
       />
-      <el-button type="primary">查询</el-button>
+      <el-button type="primary" @click="query">查询</el-button>
     </div>
     <el-divider></el-divider>
     <div class="showBlock">
@@ -39,7 +39,7 @@
   </el-card>
 </template>
 <script>
-import { getlocate } from '@/api'
+import { getlocate, getweather } from '@/api'
 
 export default {
   name: 'WeatherCard',
@@ -99,6 +99,7 @@ export default {
           label: '连云港',
         },
       ],
+      choosecity: '',
       city: '',
       ipAddress: '',
 
@@ -116,16 +117,23 @@ export default {
     getAddress() {
       getlocate().then((response) => {
         this.ipAddress = `${response.data.province}${response.data.city}`
-        this.city = '["' + response.data.city + '"]'
+        this.city = response.data.city
+        this.$store.commit('SET_CITY',this.city)
+        this.query()
         this.$alert(
           '检测到您当前城市为' + this.ipAddress + '，已为您切换至当前城市。',
           'INFO',
-          {
-            // if you want to disable its autofocus
-            // autofocus: false,
-            confirmButtonText: 'OK',
-          }
+          { confirmButtonText: 'OK' }
         )
+      })
+    },
+    query() {
+      if (this.choosecity != '') {
+        this.city = this.choosecity[0]
+        this.$store.commit('SET_CITY',this.city)
+      }
+      getweather({ city: this.city }).then((response) => {
+        console.log(response)
       })
     },
   },
