@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
     <el-form
-      ref="loginForm"
-      :model="loginForm"
+      ref="LoginForm"
+      :model="LoginForm"
       :rules="loginRules"
       class="login-form"
       auto-complete="on"
@@ -15,7 +15,7 @@
       <el-form-item prop="username">
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="LoginForm.username"
           placeholder="Username"
           name="username"
           type="text"
@@ -28,7 +28,7 @@
         <el-input
           :key="passwordType"
           ref="password"
-          v-model="loginForm.password"
+          v-model="LoginForm.password"
           :type="passwordType"
           placeholder="Password"
           name="password"
@@ -61,7 +61,7 @@ export default {
   name: 'LoginView',
   data() {
     return {
-      loginForm: {
+      LoginForm: {
         username: '',
         password: '',
       },
@@ -76,10 +76,10 @@ export default {
   },
   methods: {
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.LoginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          login(this.loginForm).then((response) => {
+          login(this.LoginForm).then((response) => {
             console.log(response);
           })
         } else {

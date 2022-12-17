@@ -79,7 +79,7 @@ export default {
       this.$refs.RegisterForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          register(this.loginForm).then((response) => {
+          register(this.RegisterForm).then((response) => {
             console.log(response)
           })
         } else {
