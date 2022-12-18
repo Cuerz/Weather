@@ -32,9 +32,10 @@ export default {
   watch: {
     city() {
       getrain({ city: this.city }).then((response) => {
-        console.log(response)
+        var data = response.data
+        var rain = data.rain
+        this.setOption(rain)
       })
-      // this.setOption(rain)
     },
   },
   methods: {

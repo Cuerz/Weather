@@ -25,17 +25,19 @@ export default {
     this.initchart()
   },
   computed: {
-    city(){
-			return this.$store.state.city
-    }
+    city() {
+      return this.$store.state.city
+    },
   },
-  watch:{
-    city(){
+  watch: {
+    city() {
       gettemperature({ city: this.city }).then((response) => {
-        console.log(response)
+        var data = response.data
+        var date = data.date
+        var temperature = data.temperature
+        this.setOption(date, temperature)
       })
-      // this.setOption(date,temperature)
-    }
+    },
   },
   methods: {
     initchart() {
@@ -43,7 +45,7 @@ export default {
         renderer: 'svg',
       })
     },
-    setOption(date,temperature) {
+    setOption(date, temperature) {
       const option = {
         title: {
           text: 'Temperature Condition',
@@ -71,7 +73,7 @@ export default {
         ],
       }
       option && temEcharts.setOption(option)
-    }
+    },
   },
 }
 </script>

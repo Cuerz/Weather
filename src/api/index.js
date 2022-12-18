@@ -28,7 +28,7 @@ export function register(data) {
 
 export function getweather(data) {
   return request({
-    url: 'http://localhost:8080/weather',
+    url: 'http://127.0.0.1:4523/m1/2094758-0-default/weather',
     method: 'post',
     data
   })
@@ -36,7 +36,7 @@ export function getweather(data) {
 
 export function gettemperature(data) {
   return request({
-    url: 'http://localhost:8080/temperature',
+    url: 'http://127.0.0.1:4523/m1/2094758-0-default/temperature',
     method: 'post',
     data,
   })
@@ -44,7 +44,7 @@ export function gettemperature(data) {
 
 export function getrain(data) {
   return request({
-    url: 'http://localhost:8080/rain',
+    url: 'http://127.0.0.1:4523/m1/2094758-0-default/rain',
     method: 'post',
     data,
   })

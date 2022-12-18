@@ -117,7 +117,7 @@ export default {
     getAddress() {
       getlocate().then((response) => {
         this.ipAddress = `${response.data.province}${response.data.city}`
-        this.city = response.data.city
+        this.city = response.data.city.slice(0,-1)
         this.$store.commit('SET_CITY',this.city)
         this.query()
         this.$alert(
@@ -133,7 +133,12 @@ export default {
         this.$store.commit('SET_CITY',this.city)
       }
       getweather({ city: this.city }).then((response) => {
-        console.log(response)
+        var data = response.data
+        this.weather=data.weather
+        this.temperature=data.temperature
+        this.winddirection=data.winddirection
+        this.windpower=data.windpower
+        this.humidity=data.humidity
       })
     },
   },
