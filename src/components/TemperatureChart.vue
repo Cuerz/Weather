@@ -32,7 +32,7 @@ export default {
   watch: {
     city() {
       gettemperature({ city: this.city }).then((response) => {
-        var data = response.data
+        var data = response.data.data
         var date = data.date
         var temperature = data.temperature
         this.setOption(date, temperature)

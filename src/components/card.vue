@@ -133,7 +133,7 @@ export default {
         this.$store.commit('SET_CITY',this.city)
       }
       getweather({ city: this.city }).then((response) => {
-        var data = response.data
+        var data = response.data.data
         this.weather=data.weather
         this.temperature=data.temperature
         this.winddirection=data.winddirection
