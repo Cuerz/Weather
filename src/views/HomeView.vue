@@ -6,6 +6,9 @@
           <source src="../assets/autumn.mp4" type="video/mp4" />
           <!-- <source src="../assets/nuist.mp4" type="video/mp4"> -->
         </video>
+        <router-link to="/weather">
+          <img class="icon" src="../assets/home_icon.png" />
+        </router-link>
         <img class="banner" src="../assets/index.png" />
       </div>
 
@@ -43,6 +46,12 @@ video {
   height: 100%;
   object-fit: fill;
   z-index: -9999;
+}
+
+.icon {
+  position: absolute;
+  right: 5vw;
+  top: 4vh;
 }
 
 .banner {
