@@ -4,6 +4,7 @@ import MyNuist from '../views/MyNuist.vue'
 import WeatherView from '../views/WeatherView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import FeedBack from '../views/FeedBack.vue'
 
 const routes = [
   {
@@ -29,6 +30,13 @@ const routes = [
     path: '/weather',
     name: 'weather',
     component: WeatherView,
+    meta: {
+      requireAuth: true
+    }
+  },{
+    path: '/feedback',
+    name: 'feedback',
+    component: FeedBack,
     meta: {
       requireAuth: true
     }
