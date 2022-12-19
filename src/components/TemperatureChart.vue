@@ -31,10 +31,14 @@ export default {
   },
   watch: {
     city() {
-      gettemperature({ city: this.city }).then((response) => {
+      gettemperature(this.city).then((response) => {
         var data = response.data.data
-        var date = data.date
-        var temperature = data.temperature
+        var temperature=[]
+        var date=[]
+        for(var i = 0; i < data.length; i++){
+          date.unshift(data[i].date.slice(5,10))
+          temperature.unshift(data[i].temperature)
+        }
         this.setOption(date, temperature)
       })
     },

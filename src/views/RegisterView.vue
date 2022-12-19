@@ -12,12 +12,12 @@
         <h3 class="title">Register</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="userName">
         <el-input
-          ref="username"
-          v-model="RegisterForm.username"
-          placeholder="Username"
-          name="username"
+          ref="userName"
+          v-model="RegisterForm.userName"
+          placeholder="userName"
+          name="userName"
           type="text"
           tabindex="1"
           auto-complete="false"
@@ -37,8 +37,19 @@
         />
       </el-form-item>
 
+      <el-form-item prop="email">
+        <el-input
+          ref="email"
+          v-model="RegisterForm.email"
+          placeholder="email"
+          name="email"
+          type="text"
+          tabindex="1"
+          auto-complete="false"
+        />
+      </el-form-item>
+
       <el-button
-        :loading="loading"
         type="primary"
         style="height: 40px; width: 100%; margin-bottom: 30px"
         @click="handleRegister"
@@ -56,18 +67,21 @@
 
 <script>
 import { register } from '@/api'
+import { ElMessage } from 'element-plus'
 
 export default {
   name: 'RegisterView',
   data() {
     return {
       RegisterForm: {
-        username: '',
+        userName: '',
         password: '',
+        email: '',
       },
       registerRules: {
-        username: [{ required: true, trigger: 'blur' }],
+        userName: [{ required: true, trigger: 'blur' }],
         password: [{ required: true, trigger: 'blur' }],
+        email: [{ required: true, trigger: 'blur' }],
       },
       loading: false,
       passwordType: 'password',
@@ -78,9 +92,19 @@ export default {
     handleRegister() {
       this.$refs.RegisterForm.validate((valid) => {
         if (valid) {
-          this.loading = true
           register(this.RegisterForm).then((response) => {
-            console.log(response)
+            var data = response.data
+            if (data.code === 0) {
+              ElMessage({
+                message: '注册成功',
+                type: 'success',
+              })
+            } else{
+              ElMessage({
+                message: '注册失败',
+                type: 'error',
+              })
+            }
           })
         } else {
           console.log('error submit!!')

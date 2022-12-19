@@ -5,6 +5,7 @@ import WeatherView from '../views/WeatherView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import FeedBack from '../views/FeedBack.vue'
+import FeedbackList from '../views/FeedbackList.vue'
 
 const routes = [
   {
@@ -37,6 +38,13 @@ const routes = [
     path: '/feedback',
     name: 'feedback',
     component: FeedBack,
+    meta: {
+      requireAuth: true
+    }
+  },{
+    path: '/allfeedback',
+    name: 'allfeedback',
+    component: FeedbackList,
     meta: {
       requireAuth: true
     }

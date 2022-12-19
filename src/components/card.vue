@@ -17,30 +17,26 @@
         {{ temperature }}℃
         <span class="weather"
           >{{ weather }}
-          <!-- <span>
-                <el-icon :size="20"><Sunny /></el-icon>
-                <i class="mainWeather" :class="getIcon"></i>
-              </span> -->
         </span>
       </p>
 
       <div class="other">
         <p class="wind">
-          <i class="el-icon-wind-power"></i> 风向:<span>{{
-            winddirection
+          <i class="el-icon-wind-power"></i> 风向: <span>{{
+            windDirection
           }}</span
-          >&nbsp;&nbsp;&nbsp;<span>风力:{{ windpower }}级</span>
+          >&nbsp;&nbsp;&nbsp;<span>风力: {{ windPower }}级</span>
         </p>
         <p class="humidity">
-          <i class="el-icon-odometer"></i> 湿度:{{ humidity }}
+          <i class="el-icon-odometer"></i> 湿度: {{ humidity }}
         </p>
       </div>
     </div>
   </el-card>
 </template>
 <script>
-import { getlocate, getweather } from '@/api'
-
+import { getweather } from '@/api'
+import { getlocate } from '@/api/locate'
 export default {
   name: 'WeatherCard',
   data() {
@@ -104,11 +100,11 @@ export default {
       ipAddress: '',
 
       // 天气情况
-      weather: '晴',
-      temperature: '25',
-      winddirection: '南',
-      windpower: '5',
-      humidity: '4',
+      weather: '',
+      temperature: '',
+      windDirection: '',
+      windPower: '',
+      humidity: '',
       icon: true,
     }
   },
@@ -132,12 +128,12 @@ export default {
         this.city = this.choosecity[0]
         this.$store.commit('SET_CITY',this.city)
       }
-      getweather({ city: this.city }).then((response) => {
+      getweather(this.city).then((response) => {
         var data = response.data.data
         this.weather=data.weather
         this.temperature=data.temperature
-        this.winddirection=data.winddirection
-        this.windpower=data.windpower
+        this.windDirection=data.windDirection
+        this.windPower=data.windPower
         this.humidity=data.humidity
       })
     },
@@ -149,7 +145,7 @@ export default {
 </script>
 <style scoped>
 .weacard {
-  margin: 10vh auto;
+  margin: 8vh auto;
   width: 20vw;
   height: 50vh;
   background: #dedee0;
@@ -174,5 +170,14 @@ export default {
   margin-top: 10px;
   margin-right: 10%;
   font-size: 120px;
+}
+
+.other {
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+.wind {
+  font-size: 20px;
 }
 </style>

@@ -1,59 +1,99 @@
 import request from '@/utils/request'
+import qs from 'qs';
 
-export function getlocate() {
+export function checklogin() {
   return request({
-    url: 'https://restapi.amap.com/v3/ip?parameters',
+    url: 'http://localhost:8080/user/isLogin',
     method: 'get',
-    params: {
-      key: '251b1d87479d58137d54b673dbdec2ea',
-    },
   })
 }
 
 export function login(data) {
   return request({
-    url: 'http://localhost:8080/login',
+    url: 'http://localhost:8080/user/doLogin',
     method: 'post',
-    data,
+    data: qs.stringify({
+      userName: data.userName,
+      password: data.password,
+    }),
+  })
+}
+
+export function sendCode(data) {
+  return request({
+    url: 'http://localhost:8080/user/sendCode',
+    method: 'post',
+    data: qs.stringify({
+      email: data.email,
+    }),
+  })
+}
+
+export function verifyCode(data) {
+  return request({
+    url: 'http://localhost:8080/user/verifyCode',
+    method: 'post',
+    data: qs.stringify({
+      code: data.code,
+    }),
   })
 }
 
 export function register(data) {
   return request({
-    url: 'http://localhost:8080/register',
+    url: 'http://localhost:8080/user/register',
     method: 'post',
-    data,
+    data: qs.stringify({
+      userName: data.userName,
+      password: data.password,
+      email: data.email
+    }),
   })
 }
 
-export function getweather(data) {
+export function getweather(city) {
   return request({
-    url: 'http://127.0.0.1:4523/m1/2094758-0-default/weather',
+    url: 'http://localhost:8080/api/sysWeatherCondition/getAll',
     method: 'post',
-    data
+    data: qs.stringify({
+      city: city
+    }),
   })
 }
 
-export function gettemperature(data) {
+export function gettemperature(city) {
   return request({
-    url: 'http://127.0.0.1:4523/m1/2094758-0-default/temperature',
+    url: 'http://localhost:8080/api/sysWeatherCondition/get7days',
     method: 'post',
-    data,
+    data: qs.stringify({
+      city: city
+    }),
   })
 }
 
-export function getrain(data) {
+export function getrain(city) {
   return request({
-    url: 'http://127.0.0.1:4523/m1/2094758-0-default/rain',
+    url: 'http://localhost:8080/api/sysRainCondition/getByCity',
     method: 'post',
-    data,
+    data: qs.stringify({
+      city: city
+    }),
   })
 }
 
 export function feedback(data) {
   return request({
-    url: 'http://localhost:8080/feedback',
+    url: 'http://localhost:8080/feedback/post',
     method: 'post',
-    data,
+    data: qs.stringify({
+      message: data.message,
+    })
+  })
+}
+
+export function getAllFeedback() {
+  return request({
+    url: 'http://localhost:8080/feedback/queryAll',
+    method: 'get',
   })
 }

@@ -8,38 +8,60 @@
         </div>
       </template>
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="联系方式">
-          <el-input v-model="form.phone" placeholder="请填写手机号"></el-input>
-        </el-form-item>
         <el-form-item label="留言">
-          <el-input type="textarea" v-model="form.comment"></el-input>
+          <el-input type="textarea" v-model="form.message"></el-input>
         </el-form-item>
       </el-form>
     </el-card>
+    <el-button
+      type="primary"
+      style="margin-top: 3vh; height: 50px; width: 140px"
+      @click="allfeedback"
+    >
+      查看所有留言<el-icon class="el-icon--right"><ArrowRight /></el-icon>
+    </el-button>
   </div>
 </template>
 
 <script>
 import { feedback } from '@/api'
-
+import { ElMessage } from 'element-plus'
 export default {
   name: 'FeedBack',
   data() {
     return {
       form: {
-        phone: '',
-        comment: '',
+        message: '',
       },
     }
   },
   methods: {
     submit() {
       feedback(this.form).then((response) => {
-        console.log(response)
+        var data = response.data
+        if (data.code === 0) {
+          ElMessage({
+            message: '留言成功',
+            type: 'success',
+          })
+        } else {
+          ElMessage({
+            message: 'error',
+            type: 'success',
+          })
+        }
       })
+      this.form.message = ''
     },
+    allfeedback() {
+      this.$router.push({ path: '/allfeedback' })
+    }
   },
 }
+</script>
+
+<script setup>
+import { ArrowRight } from '@element-plus/icons-vue'
 </script>
 
 <style scoped>
@@ -59,7 +81,7 @@ export default {
 
 .box-card {
   width: 480px;
-  height: 280px;
+  height: 200px;
   display: block;
   margin: 15vh auto 0;
 }

@@ -12,12 +12,12 @@
         <h3 class="title">Login</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="userName">
         <el-input
-          ref="username"
-          v-model="LoginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="userName"
+          v-model="LoginForm.userName"
+          placeholder="userName"
+          name="userName"
           type="text"
           tabindex="1"
           auto-complete="false"
@@ -38,11 +38,48 @@
       </el-form-item>
 
       <el-button
-        :loading="loading"
         type="primary"
         style="height: 40px; width: 100%; margin-bottom: 30px"
         @click="handleLogin"
         >登陆</el-button
+      >
+
+      <el-form-item prop="email">
+        <el-input
+          ref="email"
+          v-model="LoginForm.email"
+          placeholder="email"
+          name="email"
+          type="text"
+          tabindex="1"
+          auto-complete="false"
+        />
+      </el-form-item>
+
+      <el-button
+        type="primary"
+        style="height: 40px; width: 100%; margin-bottom: 30px"
+        @click="checkEmail"
+        >发送邮箱验证码</el-button
+      >
+
+      <el-form-item prop="code">
+        <el-input
+          ref="code"
+          v-model="LoginForm.code"
+          placeholder="code"
+          name="code"
+          type="text"
+          tabindex="1"
+          auto-complete="false"
+        />
+      </el-form-item>
+
+      <el-button
+        type="primary"
+        style="height: 40px; width: 100%; margin-bottom: 30px"
+        @click="checkCode"
+        >提交验证码</el-button
       >
 
       <div class="tips">
@@ -55,18 +92,20 @@
 </template>
 
 <script>
-import { login } from '@/api'
-
+import { login, sendCode, verifyCode } from '@/api'
+import { ElMessage } from 'element-plus'
 export default {
   name: 'LoginView',
   data() {
     return {
       LoginForm: {
-        username: '',
+        userName: '',
         password: '',
+        email: '',
+        code: '',
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur' }],
+        userName: [{ required: true, trigger: 'blur' }],
         password: [{ required: true, trigger: 'blur' }],
       },
       loading: false,
@@ -78,13 +117,51 @@ export default {
     handleLogin() {
       this.$refs.LoginForm.validate((valid) => {
         if (valid) {
-          this.loading = true
           login(this.LoginForm).then((response) => {
-            console.log(response);
+            var data = response.data
+            if (data.code === 0) {
+              ElMessage({
+                message: '请验证邮箱',
+                type: 'success',
+              })
+            } else {
+              ElMessage({
+                message: '用户名密码错误',
+                type: 'error',
+              })
+            }
           })
         } else {
           console.log('error submit!!')
           return false
+        }
+      })
+    },
+    checkEmail() {
+      sendCode(this.LoginForm).then((response) => {
+        var data = response.data
+        if (data.code === 0) {
+          ElMessage({
+            message: '已发送验证码',
+            type: 'success',
+          })
+        }
+      })
+    },
+    checkCode() {
+      verifyCode(this.LoginForm).then((response) => {
+        var data = response.data
+        if (data.code === 0) {
+          ElMessage({
+            message: '验证成功',
+            type: 'success',
+          })
+          this.$router.push({ path: '/weather' })
+        } else {
+          ElMessage({
+            message: 'error',
+            type: 'error',
+          })
         }
       })
     },
